@@ -30,4 +30,11 @@ class Tag extends ActiveRecord
             'color' => 'Цвет',
         ];
     }
+        public static function getList(): array
+    {
+        return self::find()
+            ->select(['id', 'name'])
+            ->indexBy('id')
+            ->column();
+    }
 }

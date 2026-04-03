@@ -5,16 +5,22 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
-class Task extends ActiveRecord {
+class Task extends ActiveRecord
+{
+    /** @var int[] выбранные id тегов из формы (не колонка БД) */
+    public $tagIds = [];
 
+    /** @var int[] выбранные id исполнителей из формы (не колонка БД) */
+    public $executorIds = [];
 
     const PRIORITY_LOW = 1;
     const PRIORITY_MEDIUM = 2;
     const PRIORITY_HIGH = 3;
 
 
-    public static function tableName (){
-          return 'task';
+    public static function tableName()
+    {
+        return 'task';
     }
 
     public function rules()
@@ -30,6 +36,7 @@ class Task extends ActiveRecord {
             // exist — проверяет, что запись с таким id существует в связанной таблице
             [['project_id'], 'exist', 'targetClass' => Project::class, 'targetAttribute' => 'id'],
             [['status_id'], 'exist', 'targetClass' => Status::class, 'targetAttribute' => 'id'],
+            [['tagIds', 'executorIds'], 'each', 'rule' => ['integer']],
         ];
     }
     public function attributeLabels(): array
@@ -44,25 +51,28 @@ class Task extends ActiveRecord {
             'deadline'    => 'Дедлайн',
             'created_at'  => 'Создана',
             'updated_at'  => 'Обновлена',
+            'tagIds'      => 'Теги',
+            'executorIds' => 'Исполнители',
         ];
     }
 
-    public function getPriorityList() :array {
+    public static function getPriorityList(): array
+    {
         return [
-            self::PRIORITY_LOW =>'Низкий',
-            self::PRIORITY_MEDIUM =>'Средний',
-            self::PRIORITY_HIGH =>'Высокий'
+            self::PRIORITY_LOW => 'Низкий',
+            self::PRIORITY_MEDIUM => 'Средний',
+            self::PRIORITY_HIGH => 'Высокий'
         ];
     }
 
     public function getProject(): \yii\db\ActiveQuery
     {
-        return $this->belongsTo(Project::class, ['project_id' => 'id']);
+        return $this->hasOne(Project::class, ['project_id' => 'id']);
     }
 
     public function getStatus(): \yii\db\ActiveQuery
     {
-        return $this->belongsTo(Status::class, ['status_id' => 'id']);
+        return $this->hasOne(Status::class, ['status_id' => 'id']);
     }
 
     public function getTags(): \yii\db\ActiveQuery
@@ -74,7 +84,7 @@ class Task extends ActiveRecord {
     {
         return $this->hasMany(Executor::class, ['id' => 'executor_id'])->viaTable('task_executor', ['task_id' => 'id']);
     }
-    
+
     public function saveTags(array $tagIds): void
     {
         Yii::$app->db->createCommand()->delete('task_tag', ['task_id' => $this->id])->execute();
@@ -97,13 +107,10 @@ class Task extends ActiveRecord {
 
     public function beforeSave($insert): bool
     {
-        if (!parent::beforeSave($insert)){
+        if (!parent::beforeSave($insert)) {
             return false;
         }
-
         $this->updated_at = date('Y-m-d H:i:s');
         return true;
     }
 }
-
-

@@ -29,4 +29,11 @@ class Executor extends ActiveRecord
             'email' => 'Email',
         ];
     }
+        public static function getList(): array
+    {
+        return self::find()
+            ->select(['id', 'name'])
+            ->indexBy('id')
+            ->column();
+    }
 }

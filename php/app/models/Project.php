@@ -26,8 +26,16 @@ class Project extends ActiveRecord {
             'created_at' => 'Создан'
         ];
     }
+        public static function getList(): array
+    {
+        return self::find()
+            ->select(['id', 'title'])
+            ->indexBy('id')
+            ->column();
+    }
 
 }
+
 // Project::find()->all()
 // Project::findOne(1)
 // $project->save()
