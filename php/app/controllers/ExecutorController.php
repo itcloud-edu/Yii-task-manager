@@ -3,12 +3,28 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use app\models\Executor;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 class ExecutorController extends Controller
 {
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $executors = Executor::find()->orderBy(['id' => SORT_DESC])->all();

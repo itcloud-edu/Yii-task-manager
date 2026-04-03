@@ -5,7 +5,9 @@ namespace app\controllers;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use app\models\Task;
 use app\models\Project;
 use app\models\Status;
@@ -14,9 +16,33 @@ use app\models\Executor;
 
 class TaskController extends Controller
 {
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
-        $tasks = Task::find()->orderBy(['id' => SORT_DESC])->all();
+        $userProjectIds = Project::find()
+            ->select('id')
+            ->where(['user_id' => Yii::$app->user->id])
+            ->column();
+
+        $tasks = Task::find()
+            ->where(['project_id' => $userProjectIds])
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+
         return $this->render('index', ['tasks' => $tasks]);
     }
 
@@ -87,11 +113,17 @@ class TaskController extends Controller
         return $this->render('delete', ['model' => $model]);
     }
 
-    private function findTask($id)
+    private function findTask($id): Task
     {
-        $task = Task::findOne($id);
+        $task = Task::find()
+            ->where(['id' => $id])
+            ->with(['project'])
+            ->one();
         if ($task === null) {
             throw new NotFoundHttpException('Задача не найдена');
+        }
+        if ($task->project === null || $task->project->user_id !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException('Доступ запрещён');
         }
         return $task;
     }

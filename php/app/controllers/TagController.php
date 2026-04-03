@@ -3,12 +3,28 @@
 namespace app\controllers;
 
 use yii\web\Controller;
+use yii\filters\AccessControl;
 use app\models\Tag;
 use Yii;
 use yii\web\NotFoundHttpException;
 
 class TagController extends Controller
 {
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $tags = Tag::find()->orderBy(['id' => SORT_DESC])->all();
