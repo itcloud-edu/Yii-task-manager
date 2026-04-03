@@ -6,9 +6,32 @@ use yii\web\Controller;
 use app\models\Project;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\filters\AccessControl;
 
 class ProjectController extends Controller
 {
+    public function behaviors(): array
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::class,
+
+                // 'rules' — список правил. Применяются сверху вниз, первое совпавшее — финальное.
+                'rules' => [
+                    [
+                        // allow = true → разрешить
+                        'allow' => true,
+
+                        // '@' — аутентифицированный пользователь (залогиненный).
+                        // '?' означало бы гость.
+                        // Если текущий пользователь не подходит ни под одно правило — доступ запрещён.
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex()
     {
         $projects = Project::find()->orderBy(['created_at' => SORT_DESC])->all();

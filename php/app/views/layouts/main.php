@@ -46,6 +46,23 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ['label' => 'Задачи', 'url' => ['/task/index']],
                 ['label' => 'Теги', 'url' => ['/tag/index']],
                 ['label' => 'Исполнители', 'url' => ['/executor/index']],
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Войти', 'url' => ['/site/login']]
+                    : '',
+                Yii::$app->user->isGuest
+                    ? ['label' => 'Регистрация', 'url' => ['/site/signup']]
+                    : '',
+                Yii::$app->user->isGuest
+                    ? ''
+                    : '<li class="nav-item">'
+                        . Html::beginForm(['/site/logout'])
+                        . Html::submitButton(
+                            'Выйти (' . Yii::$app->user->identity->username . ')',
+                            ['class' => 'nav-link btn btn-link logout']
+                        )
+                        . Html::endForm()
+                        . '</li>',
+
             ]
         ]);
         NavBar::end();

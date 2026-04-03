@@ -19,6 +19,11 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'user' => [
+            'identityClass' => app\models\User::class,
+            'enableAutoLogin' => true,
+            'loginUrl' => ['/login']
+        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -37,6 +42,9 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 ''                            => 'site/index',
+                'login'                       => 'site/login',
+                'signup'                      => 'site/signup',
+                'loguot'                      => 'site/loguot',
                 'projects'                    => 'project/index',
                 'projects/create'             => 'project/create',
                 'projects/<id:\d+>'           => 'project/view',
