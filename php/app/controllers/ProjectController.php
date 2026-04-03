@@ -49,7 +49,14 @@ class ProjectController extends Controller
 
     public function actionDelete($id)
     {
-        return $this->render('delete', ['id' => (int) $id]);
+        $model = $this->findProject($id);
+
+        if(Yii::$app->request->isPost){
+            $model->delete();
+            return $this->redirect(['project/index']);
+        }
+
+        return $this->render('delete', ['model' => $model]);
     }
 
     private function findProject($id)
