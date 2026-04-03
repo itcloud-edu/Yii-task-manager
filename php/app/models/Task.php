@@ -8,10 +8,10 @@ use yii\db\ActiveRecord;
 class Task extends ActiveRecord
 {
     /** @var int[] выбранные id тегов из формы (не колонка БД) */
-    public $tagIds = [];
+    public $tag_ids = [];
 
     /** @var int[] выбранные id исполнителей из формы (не колонка БД) */
-    public $executorIds = [];
+    public $executor_ids = [];
 
     const PRIORITY_LOW = 1;
     const PRIORITY_MEDIUM = 2;
@@ -36,7 +36,7 @@ class Task extends ActiveRecord
             // exist — проверяет, что запись с таким id существует в связанной таблице
             [['project_id'], 'exist', 'targetClass' => Project::class, 'targetAttribute' => 'id'],
             [['status_id'], 'exist', 'targetClass' => Status::class, 'targetAttribute' => 'id'],
-            [['tagIds', 'executorIds'], 'each', 'rule' => ['integer']],
+            [['tag_ids', 'executor_ids'], 'each', 'rule' => ['integer']],
         ];
     }
     public function attributeLabels(): array
@@ -51,8 +51,8 @@ class Task extends ActiveRecord
             'deadline'    => 'Дедлайн',
             'created_at'  => 'Создана',
             'updated_at'  => 'Обновлена',
-            'tagIds'      => 'Теги',
-            'executorIds' => 'Исполнители',
+            'tag_ids'      => 'Теги',
+            'executor_ids' => 'Исполнители',
         ];
     }
 
@@ -85,22 +85,22 @@ class Task extends ActiveRecord
         return $this->hasMany(Executor::class, ['id' => 'executor_id'])->viaTable('task_executor', ['task_id' => 'id']);
     }
 
-    public function saveTags(array $tagIds): void
+    public function saveTags(array $tag_ids): void
     {
         Yii::$app->db->createCommand()->delete('task_tag', ['task_id' => $this->id])->execute();
 
-        if (!empty($tagIds)) {
-            $rows = array_map(fn($tagId) => [$this->id, $tagId], $tagIds);
+        if (!empty($tag_ids)) {
+            $rows = array_map(fn($tagId) => [$this->id, $tagId], $tag_ids);
             Yii::$app->db->createCommand()->batchInsert('task_tag', ['task_id', 'tag_id'], $rows)->execute();
         }
     }
 
-    public function saveExecutors(array $tagIds): void
+    public function saveExecutors(array $executor_ids): void
     {
         Yii::$app->db->createCommand()->delete('task_executor', ['task_id' => $this->id])->execute();
 
-        if (!empty($tagIds)) {
-            $rows = array_map(fn($tagId) => [$this->id, $tagId], $tagIds);
+        if (!empty($executor_ids)) {
+            $rows = array_map(fn($executorId) => [$this->id, $executorId], $executor_ids);
             Yii::$app->db->createCommand()->batchInsert('task_executor', ['task_id', 'executor_id'], $rows)->execute();
         }
     }

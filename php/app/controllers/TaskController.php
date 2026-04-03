@@ -27,8 +27,8 @@ class TaskController extends Controller
         $model->priority = Task::PRIORITY_MEDIUM;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->saveTags(is_array($model->tagIds) ? $model->tagIds : []);
-            $model->saveExecutors(is_array($model->executorIds) ? $model->executorIds : []);
+            $model->saveTags(is_array($model->tag_ids) ? $model->tag_ids : []);
+            $model->saveExecutors(is_array($model->executor_ids) ? $model->executor_ids : []);
             return $this->redirect(['task/view', 'id' => $model->id]);
         }
 
@@ -57,12 +57,12 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findTask($id);
-        $model->tagIds = ArrayHelper::getColumn($model->tags, 'id');
-        $model->executorIds = ArrayHelper::getColumn($model->executors, 'id');
+        $model->tag_ids = ArrayHelper::getColumn($model->tags, 'id');
+        $model->executor_ids = ArrayHelper::getColumn($model->executors, 'id');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->saveTags(is_array($model->tagIds) ? $model->tagIds : []);
-            $model->saveExecutors(is_array($model->executorIds) ? $model->executorIds : []);
+            $model->saveTags(is_array($model->tag_ids) ? $model->tag_ids : []);
+            $model->saveExecutors(is_array($model->executor_ids) ? $model->executor_ids : []);
             return $this->redirect(['task/view', 'id' => $model->id]);
         }
 
