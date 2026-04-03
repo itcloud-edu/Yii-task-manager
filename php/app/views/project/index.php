@@ -5,12 +5,16 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\assets\ButtonAsset;
+use app\widgets\ProjectCard;
+
+ButtonAsset::register($this);
 
 $this->title = 'Проекты';
 ?>
 <div class="crud-index">
     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h1 class="h5 mb-0"><?= Html::encode($this->title) ?></h1>
+        <h1 class="h5 mb-0 button"><?= Html::encode($this->title) ?></h1>
         <?= Html::a('Создать проект', Url::to(['project/create']), ['class' => 'btn btn-primary btn-sm']) ?>
     </div>
 
@@ -29,6 +33,9 @@ $this->title = 'Проекты';
                         <?= Html::a('Удалить', Url::to(['project/delete', 'id' => $project->id]), ['class' => 'btn btn-outline-danger']) ?>
                     </div>
                 </div>
+            <?php endforeach; ?>
+            <?php foreach ($projects as $project): ?>
+                <?= ProjectCard::widget(['project' => $project,]); ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>

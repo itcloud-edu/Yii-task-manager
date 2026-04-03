@@ -6,6 +6,8 @@
 use yii\helpers\Html;
 
 $this->title = 'Новый тег';
+$this->registerJsFile('@web/js/script.js');
+$this->registerCss('.breadcrumb {font-size:60px}');
 ?>
 <div class="crud-form-page">
     <nav aria-label="breadcrumb" class="mb-2">

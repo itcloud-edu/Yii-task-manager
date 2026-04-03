@@ -25,33 +25,31 @@ class ProjectController extends Controller
     {
         $model = new Project();
 
-        if($model->load(Yii::$app->request->post()) && $model->save()){
-
-            return $this->redirect(['project/view', 'id' => $model->id ]);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', ['Проект создан', 'Урра!']);
+            return $this->redirect(['project/view', 'id' => $model->id]);
         }
-    
-        return $this->render('create', ['model' =>  $model ]);
+
+        return $this->render('create', ['model' =>  $model]);
     }
 
     public function actionUpdate($id)
     {
         $model = $this->findProject($id);
 
-        if($model->load(Yii::$app->request->post()) && $model->save()){
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            return $this->redirect(['project/view', 'id' => $model->id ]);
+            return $this->redirect(['project/view', 'id' => $model->id]);
         }
-    
-        return $this->render('update', ['model' =>  $model ]);
-    
-    
+
+        return $this->render('update', ['model' =>  $model]);
     }
 
     public function actionDelete($id)
     {
         $model = $this->findProject($id);
 
-        if(Yii::$app->request->isPost){
+        if (Yii::$app->request->isPost) {
             $model->delete();
             return $this->redirect(['project/index']);
         }
