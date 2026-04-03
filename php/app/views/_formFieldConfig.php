@@ -1,11 +1,12 @@
 <?php
 
 /**
- * Общие настройки ActiveForm: компактные подписи и сообщения об ошибках.
+ * Things 3-style ActiveForm field configuration.
+ * Labels: small uppercase, muted. Errors: small red. Wrapper: tight margin.
  */
 return [
     'options' => ['class' => 'mb-2'],
-    'labelOptions' => ['class' => 'form-label small mb-0'],
-    'errorOptions' => ['class' => 'invalid-feedback d-block small'],
-    'hintOptions' => ['class' => 'form-text small text-muted'],
+    'labelOptions' => ['class' => 'form-label'],
+    'errorOptions' => ['class' => 'invalid-feedback d-block'],
+    'hintOptions' => ['class' => 'form-text'],
 ];

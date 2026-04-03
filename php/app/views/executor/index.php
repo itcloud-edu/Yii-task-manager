@@ -8,27 +8,31 @@ use yii\helpers\Url;
 
 $this->title = 'Исполнители';
 ?>
-<div class="crud-index">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h1 class="h5 mb-0"><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('Добавить исполнителя', Url::to(['executor/create']), ['class' => 'btn btn-primary btn-sm']) ?>
+<div>
+    <div class="t3-page-header">
+        <h1 class="t3-page-title"><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('+ Добавить', Url::to(['executor/create']), ['class' => 't3-btn t3-btn-primary']) ?>
     </div>
 
     <?php if ($executors === []): ?>
-        <div class="alert alert-light border py-2 px-3 small mb-0">
-            Исполнителей пока нет. <?= Html::a('Добавить', ['executor/create'], ['class' => 'alert-link']) ?>.
+        <div class="t3-empty">
+            Исполнителей пока нет.<br>
+            <?= Html::a('Добавить исполнителя', ['executor/create']) ?>
         </div>
     <?php else: ?>
-        <div class="list-group list-group-flush border rounded shadow-sm">
+        <div class="t3-list">
             <?php foreach ($executors as $executor): ?>
-                <div class="list-group-item py-2 px-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
-                    <div class="small min-w-0">
-                        <span class="fw-medium"><?= Html::encode($executor->name) ?></span>
-                        <span class="text-muted ms-1"><?= Html::encode($executor->email) ?></span>
+                <div class="t3-row">
+                    <div class="t3-circle" style="border-color:var(--accent);opacity:.4;"></div>
+                    <div class="t3-row-body">
+                        <div class="t3-row-title"><?= Html::encode($executor->name) ?></div>
+                        <?php if ($executor->email): ?>
+                            <div class="t3-row-meta"><?= Html::encode($executor->email) ?></div>
+                        <?php endif; ?>
                     </div>
-                    <div class="btn-group btn-group-sm flex-shrink-0" role="group">
-                        <?= Html::a('Изменить', Url::to(['executor/update', 'id' => $executor->id]), ['class' => 'btn btn-outline-primary']) ?>
-                        <?= Html::a('Удалить', Url::to(['executor/delete', 'id' => $executor->id]), ['class' => 'btn btn-outline-danger']) ?>
+                    <div class="t3-row-actions" style="opacity:1;">
+                        <?= Html::a('Изменить', ['executor/update', 'id' => $executor->id]) ?>
+                        <?= Html::a('Удалить', ['executor/delete', 'id' => $executor->id], ['class' => 'danger']) ?>
                     </div>
                 </div>
             <?php endforeach; ?>

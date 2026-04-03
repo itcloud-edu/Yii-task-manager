@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\Alert;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 
@@ -9,35 +10,38 @@ use yii\bootstrap5\Html;
  */
 
 $this->title = 'Вход';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="t3-auth-wrap">
+    <div class="t3-auth-card">
+        <div class="t3-auth-logo"><?= Html::encode(Yii::$app->name) ?></div>
+        <div class="t3-auth-sub">Войдите, чтобы продолжить</div>
+        <?= Alert::widget() ?>
 
-    <p>Введите логин и пароль:</p>
+        <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
-    <div class="row">
-        <div class="col-lg-5">
+        <?= $form->field($model, 'username')->textInput([
+            'autofocus' => true,
+            'placeholder' => 'Логин',
+            'class' => 'form-control',
+        ])->label('Логин') ?>
 
-            <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
+        <?= $form->field($model, 'password')->passwordInput([
+            'placeholder' => 'Пароль',
+            'class' => 'form-control',
+        ])->label('Пароль') ?>
 
-            <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?= $form->field($model, 'rememberMe')->checkbox([
+            'label' => 'Запомнить меня',
+        ])->label(false) ?>
 
-            <?= $form->field($model, 'password')->passwordInput() ?>
+        <div style="margin-top:20px;">
+            <?= Html::submitButton('Войти', ['class' => 't3-btn t3-btn-primary', 'style' => 'width:100%;justify-content:center;']) ?>
+        </div>
 
-            <?= $form->field($model, 'rememberMe')->checkbox() ?>
+        <?php ActiveForm::end(); ?>
 
-            <div class="mt-3">
-                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
-
-                <?php
-                // Ссылка на регистрацию — если аккаунта ещё нет
-                ?>
-                <?= Html::a('Нет аккаунта? Зарегистрироваться', ['/site/signup'], ['class' => 'btn btn-link']) ?>
-            </div>
-
-            <?php ActiveForm::end(); ?>
-
+        <div class="t3-auth-footer">
+            Нет аккаунта? <?= Html::a('Зарегистрироваться', ['/site/signup']) ?>
         </div>
     </div>
 </div>

@@ -5,37 +5,37 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\assets\ButtonAsset;
-use app\widgets\ProjectCard;
-
-ButtonAsset::register($this);
 
 $this->title = 'Проекты';
 ?>
-<div class="crud-index">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h1 class="h5 mb-0 button"><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('Создать проект', Url::to(['project/create']), ['class' => 'btn btn-primary btn-sm']) ?>
+<div>
+    <div class="t3-page-header">
+        <h1 class="t3-page-title"><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('+ Новый проект', Url::to(['project/create']), ['class' => 't3-btn t3-btn-primary']) ?>
     </div>
 
     <?php if ($projects === []): ?>
-        <div class="alert alert-light border py-2 px-3 small mb-0">
-            Проектов пока нет. <?= Html::a('Создать первый', ['project/create'], ['class' => 'alert-link']) ?>.
+        <div class="t3-empty">
+            Проектов пока нет.<br>
+            <?= Html::a('Создать первый проект', ['project/create']) ?>
         </div>
     <?php else: ?>
-        <div class="list-group list-group-flush border rounded shadow-sm">
+        <div class="t3-list">
             <?php foreach ($projects as $project): ?>
-                <div class="list-group-item py-2 px-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
-                    <span class="small fw-medium text-truncate" style="max-width: 100%;"><?= Html::encode($project->title) ?></span>
-                    <div class="btn-group btn-group-sm flex-shrink-0" role="group">
-                        <?= Html::a('Открыть', Url::to(['project/view', 'id' => $project->id]), ['class' => 'btn btn-outline-primary']) ?>
-                        <?= Html::a('Изменить', Url::to(['project/update', 'id' => $project->id]), ['class' => 'btn btn-outline-secondary']) ?>
-                        <?= Html::a('Удалить', Url::to(['project/delete', 'id' => $project->id]), ['class' => 'btn btn-outline-danger']) ?>
+                <div class="t3-row" onclick="location.href='<?= Url::to(['project/view', 'id' => $project->id]) ?>'">
+                    <div class="t3-row-body">
+                        <div class="t3-row-title"><?= Html::encode($project->title) ?></div>
+                        <?php if (trim((string) $project->description) !== ''): ?>
+                            <div class="t3-row-meta" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;">
+                                <?= Html::encode(mb_strimwidth(strip_tags($project->description), 0, 80, '…')) ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="t3-row-actions">
+                        <?= Html::a('Изменить', ['project/update', 'id' => $project->id], ['onclick' => 'event.stopPropagation()']) ?>
+                        <?= Html::a('Удалить', ['project/delete', 'id' => $project->id], ['class' => 'danger', 'onclick' => 'event.stopPropagation()']) ?>
                     </div>
                 </div>
-            <?php endforeach; ?>
-            <?php foreach ($projects as $project): ?>
-                <?= ProjectCard::widget(['project' => $project,]); ?>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>

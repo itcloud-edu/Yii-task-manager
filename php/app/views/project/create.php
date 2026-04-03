@@ -6,14 +6,14 @@ use yii\helpers\Html;
 
 $this->title = 'Новый проект';
 ?>
-<div class="crud-form-page">
-    <nav aria-label="breadcrumb" class="mb-2">
-        <ol class="breadcrumb breadcrumb-sm mb-0 small">
-            <li class="breadcrumb-item"><?= Html::a('Проекты', ['project/index']) ?></li>
-            <li class="breadcrumb-item active" aria-current="page">Создание</li>
-        </ol>
-    </nav>
-    <h1 class="h5 mb-3"><?= Html::encode($this->title) ?></h1>
+<div>
+    <div class="t3-breadcrumb">
+        <?= Html::a('Проекты', ['project/index']) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <span>Новый проект</span>
+    </div>
+    <h1 class="t3-page-title" style="margin-bottom:22px;"><?= Html::encode($this->title) ?></h1>
+
     <?= $this->render('_form', [
         'model' => $model,
         'formAction' => ['project/create'],

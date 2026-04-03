@@ -6,17 +6,15 @@
 use yii\helpers\Html;
 
 $this->title = 'Новый тег';
-$this->registerJsFile('@web/js/script.js');
-$this->registerCss('.breadcrumb {font-size:60px}');
 ?>
-<div class="crud-form-page">
-    <nav aria-label="breadcrumb" class="mb-2">
-        <ol class="breadcrumb breadcrumb-sm mb-0 small">
-            <li class="breadcrumb-item"><?= Html::a('Теги', ['tag/index']) ?></li>
-            <li class="breadcrumb-item active" aria-current="page">Создание</li>
-        </ol>
-    </nav>
-    <h1 class="h5 mb-3"><?= Html::encode($this->title) ?></h1>
+<div>
+    <div class="t3-breadcrumb">
+        <?= Html::a('Теги', ['tag/index']) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <span>Новый тег</span>
+    </div>
+    <h1 class="t3-page-title" style="margin-bottom:22px;"><?= Html::encode($this->title) ?></h1>
+
     <?= $this->render('_form', [
         'model' => $model,
         'formAction' => ['tag/create'],

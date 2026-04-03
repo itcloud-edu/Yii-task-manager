@@ -6,35 +6,35 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'Проект #' . $project->id;
+$this->title = $project->title;
 ?>
-<div class="crud-view">
-    <nav aria-label="breadcrumb" class="mb-2">
-        <ol class="breadcrumb breadcrumb-sm mb-0 small">
-            <li class="breadcrumb-item"><?= Html::a('Проекты', ['project/index']) ?></li>
-            <li class="breadcrumb-item active" aria-current="page"><?= Html::encode($project->title) ?></li>
-        </ol>
-    </nav>
+<div>
+    <div class="t3-breadcrumb">
+        <?= Html::a('Проекты', ['project/index']) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <span><?= Html::encode($project->title) ?></span>
+    </div>
 
-    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
-        <h1 class="h5 mb-0"><?= Html::encode($project->title) ?></h1>
-        <div class="btn-group btn-group-sm flex-shrink-0">
-            <?= Html::a('Изменить', Url::to(['project/update', 'id' => $project->id]), ['class' => 'btn btn-outline-primary']) ?>
-            <?= Html::a('Удалить', Url::to(['project/delete', 'id' => $project->id]), ['class' => 'btn btn-outline-danger']) ?>
+    <div class="t3-page-header">
+        <div></div>
+        <div style="display:flex;gap:8px;">
+            <?= Html::a('Изменить', Url::to(['project/update', 'id' => $project->id]), ['class' => 't3-btn t3-btn-secondary']) ?>
+            <?= Html::a('Удалить', Url::to(['project/delete', 'id' => $project->id]), ['class' => 't3-btn t3-btn-ghost', 'style' => 'color:var(--red)']) ?>
         </div>
     </div>
 
-    <div class="card border shadow-sm mb-3">
-        <div class="card-body py-2 px-3 small">
+    <div class="t3-card">
+        <div class="t3-card-body">
+            <h1 class="t3-detail-title"><?= Html::encode($project->title) ?></h1>
             <?php if (trim((string) $project->description) !== ''): ?>
-                <?= nl2br(Html::encode($project->description)) ?>
+                <p style="color:var(--text-muted);font-size:14px;line-height:1.6;margin:0;">
+                    <?= nl2br(Html::encode($project->description)) ?>
+                </p>
             <?php else: ?>
-                <span class="text-muted">Описание не задано</span>
+                <p style="color:var(--text-faint);font-size:14px;margin:0;">Описание не задано</p>
             <?php endif; ?>
         </div>
     </div>
 
-    <p class="mb-0">
-        <?= Html::a('К списку проектов', Url::to(['project/index']), ['class' => 'btn btn-link btn-sm ps-0']) ?>
-    </p>
+    <?= Html::a('← К проектам', Url::to(['project/index']), ['class' => 't3-btn-link']) ?>
 </div>

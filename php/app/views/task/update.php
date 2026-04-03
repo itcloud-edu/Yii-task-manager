@@ -10,20 +10,20 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-$this->title = 'Редактирование: ' . $model->title;
+$this->title = 'Редактирование задачи';
 ?>
-<div class="crud-form-page">
-    <nav aria-label="breadcrumb" class="mb-2">
-        <ol class="breadcrumb breadcrumb-sm mb-0 small">
-            <li class="breadcrumb-item"><?= Html::a('Задачи', ['task/index']) ?></li>
-            <li class="breadcrumb-item"><?= Html::a(Html::encode($model->title), ['task/view', 'id' => $model->id]) ?></li>
-            <li class="breadcrumb-item active" aria-current="page">Редактирование</li>
-        </ol>
-    </nav>
+<div>
+    <div class="t3-breadcrumb">
+        <?= Html::a('Задачи', ['task/index']) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <?= Html::a(Html::encode($model->title), ['task/view', 'id' => $model->id]) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <span>Редактирование</span>
+    </div>
 
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h1 class="h5 mb-0">Редактирование задачи</h1>
-        <?= Html::a('Удалить', Url::to(['task/delete', 'id' => $model->id]), ['class' => 'btn btn-outline-danger btn-sm']) ?>
+    <div class="t3-page-header">
+        <h1 class="t3-page-title">Редактирование задачи</h1>
+        <?= Html::a('Удалить', Url::to(['task/delete', 'id' => $model->id]), ['class' => 't3-btn t3-btn-ghost', 'style' => 'color:var(--red)']) ?>
     </div>
 
     <?= $this->render('_form', [

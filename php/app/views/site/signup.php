@@ -1,5 +1,6 @@
 <?php
 
+use app\widgets\Alert;
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 
@@ -9,57 +10,39 @@ use yii\bootstrap5\Html;
  */
 
 $this->title = 'Регистрация';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="t3-auth-wrap">
+    <div class="t3-auth-card">
+        <div class="t3-auth-logo"><?= Html::encode(Yii::$app->name) ?></div>
+        <div class="t3-auth-sub">Создайте аккаунт, чтобы начать</div>
+        <?= Alert::widget() ?>
 
-    <p>Заполните форму для создания аккаунта:</p>
+        <?php $form = ActiveForm::begin(['id' => 'signup-form']); ?>
 
-    <div class="row">
-        <div class="col-lg-5">
+        <?= $form->field($model, 'username')->textInput([
+            'autofocus' => true,
+            'placeholder' => 'Минимум 2 символа',
+            'class' => 'form-control',
+        ])->label('Логин') ?>
 
-            <?php
-            // ActiveForm::begin() открывает тег <form> с CSRF-токеном внутри.
-            // Все поля — между begin() и end().
-            $form = ActiveForm::begin(['id' => 'signup-form']);
-            ?>
+        <?= $form->field($model, 'email')->input('email', [
+            'placeholder' => 'example@domain.com',
+            'class' => 'form-control',
+        ])->label('Email') ?>
 
-            <?php
-            // $form->field($model, 'username') генерирует:
-            //   — метку из attributeLabels() → "Логин"
-            //   — <input type="text"> с текущим значением
-            //   — блок ошибки валидации
-            //   — JS-валидацию по rules() (без перезагрузки страницы)
-            ?>
-            <?= $form->field($model, 'username')->textInput([
-                'autofocus'   => true,
-                'placeholder' => 'Минимум 2 символа',
-            ]) ?>
+        <?= $form->field($model, 'password')->passwordInput([
+            'placeholder' => 'Минимум 8 символов',
+            'class' => 'form-control',
+        ])->label('Пароль') ?>
 
-            <?= $form->field($model, 'email')->input('email', [
-                'placeholder' => 'example@domain.com',
-            ]) ?>
+        <div style="margin-top:20px;">
+            <?= Html::submitButton('Зарегистрироваться', ['class' => 't3-btn t3-btn-primary', 'style' => 'width:100%;justify-content:center;']) ?>
+        </div>
 
-            <?php
-            // passwordInput() → <input type="password">
-            // Символы скрыты точками, браузер предлагает сохранить пароль.
-            ?>
-            <?= $form->field($model, 'password')->passwordInput([
-                'placeholder' => 'Минимум 8 символов',
-            ]) ?>
+        <?php ActiveForm::end(); ?>
 
-            <div class="mt-3">
-                <?= Html::submitButton('Зарегистрироваться', ['class' => 'btn btn-primary']) ?>
-
-                <?php
-                // Ссылка на страницу входа — если аккаунт уже есть
-                ?>
-                <?= Html::a('Уже есть аккаунт? Войти', ['/site/login'], ['class' => 'btn btn-link']) ?>
-            </div>
-
-            <?php ActiveForm::end(); ?>
-
+        <div class="t3-auth-footer">
+            Уже есть аккаунт? <?= Html::a('Войти', ['/site/login']) ?>
         </div>
     </div>
 </div>

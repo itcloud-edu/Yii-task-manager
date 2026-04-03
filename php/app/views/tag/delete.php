@@ -8,23 +8,25 @@ use yii\helpers\Url;
 
 $this->title = 'Удаление тега';
 ?>
-<div class="crud-delete">
-    <nav aria-label="breadcrumb" class="mb-2">
-        <ol class="breadcrumb breadcrumb-sm mb-0 small">
-            <li class="breadcrumb-item"><?= Html::a('Теги', ['tag/index']) ?></li>
-            <li class="breadcrumb-item"><?= Html::a(Html::encode($model->name), ['tag/update', 'id' => $model->id]) ?></li>
-            <li class="breadcrumb-item active" aria-current="page">Удаление</li>
-        </ol>
-    </nav>
+<div>
+    <div class="t3-breadcrumb">
+        <?= Html::a('Теги', ['tag/index']) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <?= Html::a(Html::encode($model->name), ['tag/update', 'id' => $model->id]) ?>
+        <span class="t3-breadcrumb-sep">›</span>
+        <span>Удаление</span>
+    </div>
 
-    <h1 class="h5 mb-2"><?= Html::encode($this->title) ?></h1>
-    <p class="small mb-3">
-        Удалить тег <strong><?= Html::encode($model->name) ?></strong>? Связи с задачами будут сняты. Это действие нельзя отменить.
-    </p>
-
-    <?= Html::beginForm(['tag/delete', 'id' => $model->id], 'post', ['class' => 'd-inline']) ?>
-        <?= Html::submitButton('Удалить', ['class' => 'btn btn-danger btn-sm']) ?>
-    <?= Html::endForm() ?>
-
-    <?= Html::a('Отмена', Url::to(['tag/update', 'id' => $model->id]), ['class' => 'btn btn-secondary btn-sm ms-2']) ?>
+    <div class="t3-confirm">
+        <h1 class="t3-confirm-title">Удалить тег?</h1>
+        <p class="t3-confirm-text">
+            Тег <strong><?= Html::encode($model->name) ?></strong> будет удалён. Связи с задачами будут сняты.
+        </p>
+        <div class="t3-confirm-actions">
+            <?= Html::beginForm(['tag/delete', 'id' => $model->id], 'post') ?>
+                <?= Html::submitButton('Удалить', ['class' => 't3-btn t3-btn-danger']) ?>
+            <?= Html::endForm() ?>
+            <?= Html::a('Отмена', Url::to(['tag/update', 'id' => $model->id]), ['class' => 't3-btn t3-btn-secondary']) ?>
+        </div>
+    </div>
 </div>

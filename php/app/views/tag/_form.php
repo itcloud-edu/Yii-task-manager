@@ -10,23 +10,21 @@ $formFieldConfig = require Yii::getAlias('@app/views/_formFieldConfig.php');
     'action' => $formAction,
     'fieldConfig' => $formFieldConfig,
 ]); ?>
-<div class="card border shadow-sm">
-    <div class="card-body py-2 px-3">
+<div class="t3-form-card">
+    <div class="t3-form-body">
         <?= $form->field($model, 'name')->textInput([
-            'class' => 'form-control form-control-sm',
+            'class' => 'form-control',
             'autofocus' => true,
             'placeholder' => 'Название тега',
         ]) ?>
         <?= $form->field($model, 'color')->textInput([
-            'class' => 'form-control form-control-sm',
+            'class' => 'form-control',
             'placeholder' => '#e6e6e6',
         ]) ?>
     </div>
-    <div class="card-footer bg-transparent py-2 px-3 border-top-0">
-        <div class="d-flex flex-wrap gap-2">
-            <?= Html::submitButton($model->isNewRecord ? 'Создать' : 'Сохранить', ['class' => 'btn btn-primary btn-sm']) ?>
-            <?= Html::a('Назад', Url::to(['tag/index']), ['class' => 'btn btn-outline-secondary btn-sm']) ?>
-        </div>
+    <div class="t3-form-footer">
+        <?= Html::submitButton($model->isNewRecord ? 'Создать тег' : 'Сохранить', ['class' => 't3-btn t3-btn-primary']) ?>
+        <?= Html::a('Отмена', Url::to(['tag/index']), ['class' => 't3-btn t3-btn-secondary']) ?>
     </div>
 </div>
 <?php ActiveForm::end() ?>

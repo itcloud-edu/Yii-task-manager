@@ -9,40 +9,49 @@ use yii\helpers\Url;
 
 $this->title = 'Задачи';
 ?>
-<div class="crud-index">
-    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h1 class="h5 mb-0"><?= Html::encode($this->title) ?></h1>
-        <?= Html::a('Создать задачу', Url::to(['task/create']), ['class' => 'btn btn-primary btn-sm']) ?>
+<div>
+    <div class="t3-page-header">
+        <h1 class="t3-page-title"><?= Html::encode($this->title) ?></h1>
+        <?= Html::a('+ Новая задача', Url::to(['task/create']), ['class' => 't3-btn t3-btn-primary']) ?>
     </div>
 
     <?php if ($tasks === []): ?>
-        <div class="alert alert-light border py-2 px-3 small mb-0">
-            Задач пока нет. <?= Html::a('Создать первую', ['task/create'], ['class' => 'alert-link']) ?>.
+        <div class="t3-empty">
+            Задач пока нет.<br>
+            <?= Html::a('Создать первую задачу', ['task/create']) ?>
         </div>
     <?php else: ?>
-        <div class="list-group list-group-flush border rounded shadow-sm">
+        <div class="t3-list">
             <?php foreach ($tasks as $task): ?>
                 <?php
                 $p = (int) $task->priority;
                 if ($p === Task::PRIORITY_HIGH) {
-                    $priorityClass = 'danger';
+                    $dotClass = 'high';
+                    $dotTitle = 'Высокий';
                 } elseif ($p === Task::PRIORITY_LOW) {
-                    $priorityClass = 'secondary';
+                    $dotClass = 'low';
+                    $dotTitle = 'Низкий';
                 } else {
-                    $priorityClass = 'primary';
+                    $dotClass = 'medium';
+                    $dotTitle = 'Средний';
                 }
                 ?>
-                <?= Html::a(
-                    '<div class="d-flex w-100 justify-content-between align-items-center gap-2">'
-                    . '<div class="min-w-0"><span class="small fw-semibold d-block text-truncate">'
-                    . Html::encode($task->title) . '</span>'
-                    . '<span class="text-muted" style="font-size:0.75rem;">#' . (int) $task->id . '</span></div>'
-                    . '<span class="badge bg-' . $priorityClass . ' flex-shrink-0 align-self-center">'
-                    . Html::encode(Task::getPriorityList()[$task->priority] ?? '')
-                    . '</span></div>',
-                    ['task/view', 'id' => $task->id],
-                    ['class' => 'list-group-item list-group-item-action py-2 px-3', 'encode' => false]
-                ) ?>
+                <div class="t3-row" onclick="location.href='<?= Url::to(['task/view', 'id' => $task->id]) ?>'">
+                    <div class="t3-circle"></div>
+                    <div class="t3-row-body">
+                        <div class="t3-row-title"><?= Html::encode($task->title) ?></div>
+                        <?php if ($task->deadline): ?>
+                            <div class="t3-row-meta">
+                                <?= Yii::$app->formatter->asDate($task->deadline, 'php:d.m.Y') ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="t3-priority-dot <?= $dotClass ?>" title="<?= $dotTitle ?>"></div>
+                    <div class="t3-row-actions">
+                        <?= Html::a('Изменить', ['task/update', 'id' => $task->id], ['onclick' => 'event.stopPropagation()']) ?>
+                        <?= Html::a('Удалить', ['task/delete', 'id' => $task->id], ['class' => 'danger', 'onclick' => 'event.stopPropagation()']) ?>
+                    </div>
+                </div>
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
