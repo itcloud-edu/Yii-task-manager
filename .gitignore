@@ -1,0 +1,32 @@
+# Local notes / drafts
+docs/
+
+# Secrets and local env (Docker, tooling)
+.env
+.env.*
+!.env.example
+
+# Docker Compose local overrides
+docker-compose.override.yml
+
+# Yii2 local config overrides (db, params)
+php/app/config/*-local.php
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# IDE / editors
+.idea/
+.vscode/
+nbproject/
+.buildpath
+.project
+.settings/
+
+# Tool caches (if created at repo root)
+.php-cs-fixer.cache
+.phpunit.result.cache

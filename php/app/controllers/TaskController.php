@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\models\Task;
@@ -28,7 +29,7 @@ class TaskController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $model->saveTags(is_array($model->tagIds) ? $model->tagIds : []);
             $model->saveExecutors(is_array($model->executorIds) ? $model->executorIds : []);
-            return $this->redirect(['task/index']);
+            return $this->redirect(['task/view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
@@ -42,22 +43,48 @@ class TaskController extends Controller
 
     public function actionView($id)
     {
+        $task = Task::find()
+            ->where(['id' => $id])
+            ->with(['project', 'status', 'tags', 'executors'])
+            ->one();
+        if ($task === null) {
+            throw new NotFoundHttpException('Задача не найдена');
+        }
 
-        $task = $this->findTask($id);
-
-        $task = Task::find()->where(['id' => $id])->with(['project', 'status', 'tag', 'executor'])->one();
-
-        return $this->render('index', ['task' => $task]);
+        return $this->render('view', ['task' => $task]);
     }
 
     public function actionUpdate($id)
     {
-        return $this->render('update', ['id' => (int) $id]);
+        $model = $this->findTask($id);
+        $model->tagIds = ArrayHelper::getColumn($model->tags, 'id');
+        $model->executorIds = ArrayHelper::getColumn($model->executors, 'id');
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->saveTags(is_array($model->tagIds) ? $model->tagIds : []);
+            $model->saveExecutors(is_array($model->executorIds) ? $model->executorIds : []);
+            return $this->redirect(['task/view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'projects' => Project::getList(),
+            'statuses' => Status::getList(),
+            'tags' => Tag::getList(),
+            'executors' => Executor::getList(),
+        ]);
     }
 
     public function actionDelete($id)
     {
-        return $this->render('delete', ['id' => (int) $id]);
+        $model = $this->findTask($id);
+
+        if (Yii::$app->request->isPost) {
+            $model->delete();
+            return $this->redirect(['task/index']);
+        }
+
+        return $this->render('delete', ['model' => $model]);
     }
 
     private function findTask($id)

@@ -43,7 +43,14 @@ class TagController extends Controller
 
     public function actionDelete($id)
     {
-        return $this->render('delete', ['id' => (int) $id]);
+        $model = $this->findTag($id);
+
+        if (Yii::$app->request->isPost) {
+            $model->delete();
+            return $this->redirect(['tag/index']);
+        }
+
+        return $this->render('delete', ['model' => $model]);
     }
 
     private function findTag($id)

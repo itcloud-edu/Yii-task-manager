@@ -43,7 +43,14 @@ class ExecutorController extends Controller
 
     public function actionDelete($id)
     {
-        return $this->render('delete', ['id' => (int) $id]);
+        $model = $this->findExecutor($id);
+
+        if (Yii::$app->request->isPost) {
+            $model->delete();
+            return $this->redirect(['executor/index']);
+        }
+
+        return $this->render('delete', ['model' => $model]);
     }
 
     private function findExecutor($id)

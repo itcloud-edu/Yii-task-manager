@@ -67,12 +67,12 @@ class Task extends ActiveRecord
 
     public function getProject(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(Project::class, ['project_id' => 'id']);
+        return $this->hasOne(Project::class, ['id' => 'project_id']);
     }
 
     public function getStatus(): \yii\db\ActiveQuery
     {
-        return $this->hasOne(Status::class, ['status_id' => 'id']);
+        return $this->hasOne(Status::class, ['id' => 'status_id']);
     }
 
     public function getTags(): \yii\db\ActiveQuery

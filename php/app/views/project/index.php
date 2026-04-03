@@ -17,6 +17,8 @@ $this->title = 'Проекты';
         <p class="d-flex align-items-center flex-wrap gap-2">
             <?= Html::encode($project->title) ?>
             <?= Html::a('Перейти в проект', Url::to(['project/view', 'id' => $project->id]), ['class' => 'btn btn-sm btn-outline-primary']) ?>
+            <?= Html::a('Изменить', Url::to(['project/update', 'id' => $project->id]), ['class' => 'btn btn-sm btn-outline-secondary']) ?>
+            <?= Html::a('Удалить', Url::to(['project/delete', 'id' => $project->id]), ['class' => 'btn btn-sm btn-outline-danger']) ?>
         </p>
     <?php endforeach; ?>
 </div>
